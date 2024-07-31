@@ -26,12 +26,12 @@ const Profile: React.FC = () => {
           </Typography>
         </Grid>
 
-        <Grid item xs={12} sm={3}>
+        {/* <Grid item xs={12} sm={3}>
           <Typography variant="h6">Last Login:</Typography>
         </Grid>
         <Grid item xs={12} sm={9}>
           <Typography variant="h6">{'date'}</Typography>
-        </Grid>
+        </Grid> */}
       </Grid>
     </Box>
   );

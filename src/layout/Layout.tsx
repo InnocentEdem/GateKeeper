@@ -54,7 +54,6 @@ const Layout: React.FC = () => {
         sx={{
           width: drawerWidth,
           flexShrink: 0,
-          height:"4vh",
           [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box', paddingTop: '5rem' },
         }}
       >
@@ -142,7 +141,7 @@ const Layout: React.FC = () => {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3, ml: `-300px`, display: 'flex', flexDirection: 'column', height: '100vh' }}>
         <Toolbar />
-        <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', height: '100%' }}>
+        <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', height: '100%', marginLeft:"15rem" }}>
           {renderComponent()}
         </Box>
       </Box>
