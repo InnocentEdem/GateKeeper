@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, CssBaseline } from '@mui/material';
+import config from '../appConfig/config';
 
 const SwaggerUI: React.FC = () => {
   return (
@@ -8,7 +9,7 @@ const SwaggerUI: React.FC = () => {
 
       <Box sx={{ width: '80rem', height: '80vh', border: 'none', mt: 4 }}>
         <iframe
-          src="http://localhost:4000/swagger/index.html"
+          src={`${config.backendUrl}/swagger/index.html`}
           style={{ width: '100%', height: '100%', border: 'none' }}
           title="Swagger UI"
         />
