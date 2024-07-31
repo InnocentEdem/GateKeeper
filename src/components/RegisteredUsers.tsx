@@ -19,7 +19,7 @@ const RegisteredUsers: React.FC = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10); // Set initial rows per page to 10
   const [users, setUsers] = useState<User[]>([])
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
