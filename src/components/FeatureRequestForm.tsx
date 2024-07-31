@@ -1,22 +1,32 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { Container, TextField, Button, Typography, Box } from '@mui/material';
 import axiosInstance from '../appConfig/axiosConfig';
 
+interface FeatureRequest {
+  title: string;
+  feature: string;
+}
+const emptyRequest = {
+  title: "",
+  feature: "",
+}
 const FeatureRequestForm = () => {
-  const [feature, setFeature] = useState('');
-  const [description, setDescription] = useState('');
-  const [email, setEmail] = useState('');
+  const [featureRequest, setFeatureRequest] = useState<FeatureRequest>({...emptyRequest})
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = async(event) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) =>{
+    setFeatureRequest({...featureRequest, [event.target.name]: event.target.value})
+  }
+
+  const handleSubmit = async(event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      await axiosInstance.post("/feature-request",{feature_name: feature, feature_description: description})
+      await axiosInstance.post("/feature-request", {...featureRequest})
     } catch (error) {
       console.error('error sending request')
     }
     setSubmitted(true);
-    console.log({ feature, description, email });
+    setFeatureRequest({...emptyRequest})
   };
 
   return (
@@ -31,8 +41,9 @@ const FeatureRequestForm = () => {
           fullWidth
           required
           margin="normal"
-          value={feature}
-          onChange={(e) => setFeature(e.target.value)}
+          name='title'
+          value={featureRequest.title}
+          onChange={handleChange}
         />
         <TextField
           label="Feature Description"
@@ -42,18 +53,9 @@ const FeatureRequestForm = () => {
           margin="normal"
           multiline
           rows={4}
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <TextField
-          label="Your Email"
-          variant="outlined"
-          fullWidth
-          required
-          margin="normal"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          name='feature'
+          value={featureRequest.feature}
+          onChange={handleChange}
         />
         <Button
           type="submit"
@@ -66,7 +68,7 @@ const FeatureRequestForm = () => {
       </Box>
       {submitted && (
         <Typography variant="body1" color="success" sx={{ mt: 3 }}>
-          Thank you for your feature request!
+          Thank you ! Your feedback valuable to us.
         </Typography>
       )}
     </Container>
