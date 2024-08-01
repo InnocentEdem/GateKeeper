@@ -1,5 +1,5 @@
 const config = {
-  backendUrl:  'http://localhost:4000',
+  backendUrl:  'https://go-auth-v1.onrender.com',
 };
 
 export default config;
