@@ -35,9 +35,9 @@ const Signup: React.FC = () => {
           email: values.email,
           password: values.password,
         });
-        if (response.data.token && login) {
+        if (response.data && login) {
           localStorage.setItem('token', response.data.login_token);
-          navigate('/client-login');
+          navigate('/login');
         }
       } catch (error) {
         if (isAxiosError(error) && error.response) {
