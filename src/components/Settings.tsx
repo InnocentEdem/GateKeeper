@@ -47,9 +47,17 @@ const Settings: React.FC = () => {
     setIsEditingPassword(true);
   };
 
-  const handleSavePassword = () => {
-    setIsEditingPassword(false);
-    // Add logic to save password
+  const handleSavePassword = async() => {
+    try {
+      await axiosInstance.post('/update-password', {
+        new_password: passwords.newPassword,
+        old_password: passwords.newPassword
+      })
+      setIsEditingPassword(false);
+      
+    } catch (error) {
+      console.error(error)
+    }
   };
 
   const handlePasswordChange = (name: string, value: string)=>{
@@ -120,7 +128,7 @@ const Settings: React.FC = () => {
           <Button onClick={handleSavePassword} variant="contained" color="primary" startIcon={<SaveIcon />} sx={{ mr: 1 }}>
             Save Password
           </Button>
-          <Button onClick={handleCancelPasswordEdit} variant="outlined" color="secondary" startIcon={<CancelIcon />}>
+          <Button onClick={handleCancelPasswordEdit} variant="outlined" color="primary" startIcon={<CancelIcon />}>
             Cancel
           </Button>
         </Box>
