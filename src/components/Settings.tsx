@@ -6,6 +6,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import CancelIcon from '@mui/icons-material/Cancel';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import axiosInstance from '../appConfig/axiosConfig';
+import  { UpdateAdvancedConfig } from './UpdateAdvancedConfig';
 
 
 
@@ -13,6 +14,16 @@ const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text);
   alert('APN copied to clipboard');
 };
+
+export interface AdvancedConfig {
+  cors_allowed_origins: string[];
+  jwt_expiry_time: number;
+  refresh_token_enabled: boolean;
+  refresh_token_expiry_time?: number;
+  allow_jwt_custom_claims: boolean;
+  use_additional_properties: boolean;
+}
+
 
 const Settings: React.FC = () => {
   const [isEditingPassword, setIsEditingPassword] = useState(false);
@@ -43,6 +54,7 @@ const Settings: React.FC = () => {
     }
   }
 
+
   const handleEditPassword = () => {
     setIsEditingPassword(true);
   };
@@ -68,6 +80,8 @@ const Settings: React.FC = () => {
     setIsEditingPassword(false);
     setPasswords({oldPassword:"", newPassword:""})
   };
+
+
 
   useEffect(()=>{
     getClientApn()
@@ -134,6 +148,10 @@ const Settings: React.FC = () => {
         </Box>
       )}
     </Box>
+    <Box>
+      <UpdateAdvancedConfig/>
+    </Box>
+
     </Box>
   );
 };
