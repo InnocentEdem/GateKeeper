@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { AdvancedConfig } from './Settings';
 import axiosInstance from '../appConfig/axiosConfig';
+import { useSnackbar } from '../hooks/useSnackbar';
 
 export const UpdateAdvancedConfig = () => {
     const [config, setConfig] = useState<AdvancedConfig>({
@@ -19,14 +20,15 @@ export const UpdateAdvancedConfig = () => {
       allow_jwt_custom_claims:  false,
       use_additional_properties: false,
     });
+    const {showSnackbar} = useSnackbar()
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const handleSave = async() =>{
 
         try {
           const res = await axiosInstance.put("/config",{...config})
           console.log(res.data)
           setConfig({...res.data});
+          showSnackbar("Saved", "success")
         } catch (error) {
           console.error(error)
         }
