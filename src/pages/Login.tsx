@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useAuth } from '../hooks/useAuth';
 import axiosInstance from '../appConfig/axiosConfig';
+import { useSnackbar } from '../hooks/useSnackbar';
 
 const validationSchema = yup.object({
   email: yup.string().email('Enter a valid email').required('Email is required'),
@@ -14,6 +15,7 @@ const validationSchema = yup.object({
 const Login: React.FC = () => {
   const { login } = useAuth() || {};
   const navigate = useNavigate();
+  const {showSnackbar} = useSnackbar()
 
   const formik = useFormik({
     initialValues: {
@@ -27,13 +29,14 @@ const Login: React.FC = () => {
         if (response?.data.login_token ) {
           localStorage.setItem('token', response.data.login_token);
           login && login();
-          navigate('/');
+          return navigate('/');
         }
-      } catch (error) {
           setErrors({ email: 'Invalid email or password' });
-
-      } finally {
-        setSubmitting(false);
+          showSnackbar('Invalid email or password',"error")
+      } catch (error) {
+          console.error(error)
+        } finally {
+          setSubmitting(false);
       }
     },
   });

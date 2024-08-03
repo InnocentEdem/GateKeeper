@@ -7,6 +7,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import axiosInstance from '../appConfig/axiosConfig';
 import  { UpdateAdvancedConfig } from './UpdateAdvancedConfig';
+import { useSnackbar } from '../hooks/useSnackbar';
 
 
 
@@ -29,15 +30,18 @@ const Settings: React.FC = () => {
   const [isEditingPassword, setIsEditingPassword] = useState(false);
   const [apn, setApn] = useState(''); // Replace with actual APN
   const [passwords, setPasswords] = useState({oldPassword:'', newPassword: ''}); 
+  const {showSnackbar} = useSnackbar()
 
   const handleGenerateAPN = async() => {
     try {
       
       const result = await axiosInstance.post('/generate-apn')
       if(result.data.apn){
-        setApn(result.data.apn);
+        return setApn(result.data.apn);
       }
+      showSnackbar("Could not generate APN","error")
     } catch (error) {
+      showSnackbar("Could not generate APN","error")
       console.error('error generating apn')
     }
   };
