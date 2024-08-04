@@ -102,7 +102,7 @@ const Settings: React.FC = () => {
           </IconButton>
         </Box>
         <Box sx={{alignSelf:"flex-start"}}>
-        <Button onClick={handleGenerateAPN} variant="contained" color="primary" startIcon={<RefreshIcon />}>
+        <Button onClick={handleGenerateAPN} variant="outlined" color="primary" startIcon={<RefreshIcon />}>
             Generate New APN
           </Button>
         </Box>
@@ -113,7 +113,7 @@ const Settings: React.FC = () => {
           <Typography variant="h6" sx={{borderBottom: "solid 1px", justifySelf:"center", flexBasis:"40%"}}>********</Typography>
         </Box>
           {!isEditingPassword ? (
-            <Button onClick={handleEditPassword} variant="contained" color="primary" sx={{width:"13.1rem"}} startIcon={<EditIcon />}>
+            <Button onClick={handleEditPassword} variant="outlined" color="primary" sx={{width:"13.1rem"}} startIcon={<EditIcon />}>
               Change Password
             </Button>
           ) : null}
