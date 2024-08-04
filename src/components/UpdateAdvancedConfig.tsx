@@ -14,6 +14,8 @@ import {
 import { AdvancedConfig } from "./Settings";
 import axiosInstance from "../appConfig/axiosConfig";
 import { useSnackbar } from "../hooks/useSnackbar";
+import Input from "./Input";
+import { isValidURL } from "../utils/validURL";
 
 enum AllowOrigins {
   allow_all_origins = "allow_all_origins",
@@ -38,7 +40,6 @@ export const UpdateAdvancedConfig = () => {
     const data = processRequestData(config)
     try {
       const res = await axiosInstance.put("/config", { ...data });
-      console.log(res.data);
       setConfig({ ...res.data });
       showSnackbar("Saved", "success");
     } catch (error) {
@@ -48,8 +49,8 @@ export const UpdateAdvancedConfig = () => {
 
   const processRequestData=(data: AdvancedConfig)=>{
     let allowedCors = data.cors_allowed_origins;
-    allowedCors = allowedCors.filter((item)=>Boolean(item)===true)
-    if(!allowedCors?.length){
+    allowedCors = allowedCors.filter((item)=>isValidURL(item)===true)
+    if(!allowedCors?.length || specifyOrigins===AllowOrigins.allow_all_origins){
       allowedCors = [""]
     }
     return {...data, cors_allowed_origins: allowedCors}
@@ -73,9 +74,20 @@ export const UpdateAdvancedConfig = () => {
   }
 
   const handleCorsChange = (value: string, index: number) => {
-    const corsAllowedOrigins = config.cors_allowed_origins;
-    corsAllowedOrigins[index] = value;
-    setConfig({ ...config, cors_allowed_origins: corsAllowedOrigins });
+    const newOrigins = [...config.cors_allowed_origins];
+    newOrigins[index] = value;
+    setConfig({ ...config, cors_allowed_origins: [...newOrigins] });
+    console.log(config,"incorschandge")
+  };
+
+  const handleRemoveCorsString = ( index: number) => {
+    const newOrigins = [...config.cors_allowed_origins];
+    if(newOrigins.length===1){
+      newOrigins[0] = ""
+      return setConfig({ ...config, cors_allowed_origins: [...newOrigins] });
+    }
+    newOrigins.splice(index,1)
+    setConfig({ ...config, cors_allowed_origins: [...newOrigins] });
   };
 
   const handleSetCors = (value: AllowOrigins) => {
@@ -233,24 +245,16 @@ export const UpdateAdvancedConfig = () => {
           {config.cors_allowed_origins.length &&
            specifyOrigins===AllowOrigins.specify_origins &&
             config.cors_allowed_origins.map((value, index) => (
-              <Box sx={{display:"flex", flexDirection:"row", width:"100%",margin:"0.5rem 0", alignItems:"center"}}>
-              <TextField
-                fullWidth
-                variant="outlined"
-                inputProps={{ max: 1800 }}
-                type="number"
-                name="jwt_expiry_time"
-                value={value}
-                placeholder="https://www.example.com"
-                onChange={(e)=>handleCorsChange(e.target.value, index)}
-                sx={{width:"75%"}}
-              />
+              <>
+              <Box key={value+index} sx={{display:"flex", width:"100%",margin:"0.5rem 0", alignItems:"center"}}>
+              <Input index={index} value = {value} onChange={handleCorsChange} removeOrigin={handleRemoveCorsString}/>
+              </Box>
               {
                 (index===config.cors_allowed_origins.length-1) && (
-                  <Button onClick={handleAddMore} variant="outlined" color="primary" sx={{textWrap:"nowrap", margin:"1rem"}}>Add More</Button>
+                  <Button onClick={handleAddMore} variant="outlined" color="primary" sx={{textWrap:"nowrap", margin:"1rem", alignSelf:"flex-end"}}>Add More</Button>
                 )
               }
-              </Box>
+              </>
             ))}
         </Grid>
         <Grid item xs={12} sx={{marginTop:"2rem"}}>
